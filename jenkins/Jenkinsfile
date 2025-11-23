@@ -10,12 +10,14 @@ pipeline {
                 }
             }
             environment {
-                // Put Go build cache in a writable folder
-                GOCACHE = "${WORKSPACE}/.gocache"
+                // Go build cache (already OK now)
+                GOCACHE   = "${WORKSPACE}/.gocache"
+                // Go module cache (instead of /go/pkg/mod)
+                GOMODCACHE = "${WORKSPACE}/.gomodcache"
             }
             steps {
-                // Make sure cache dir exists
-                sh 'mkdir -p "$GOCACHE"'
+                // Ensure caches exist and are writable
+                sh 'mkdir -p "$GOCACHE" "$GOMODCACHE"'
 
                 dir('bugtracker-backend') {
                     sh 'go test -v ./...'
