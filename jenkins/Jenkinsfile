@@ -9,9 +9,16 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                // Put Go build cache in a writable folder
+                GOCACHE = "${WORKSPACE}/.gocache"
+            }
             steps {
-                dir('bugtracker-backend'){
-                   sh 'go test -v ./...'
+                // Make sure cache dir exists
+                sh 'mkdir -p "$GOCACHE"'
+
+                dir('bugtracker-backend') {
+                    sh 'go test -v ./...'
                 }
             }
         }
